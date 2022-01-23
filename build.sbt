@@ -16,20 +16,21 @@
 
 lazy val kamon = (project in file("."))
   .settings(moduleName := "kamon")
-  .settings(noPublishing: _*)
+//  .settings(noPublishing: _*)
   .aggregate(core, testkit, coreTests)
 
 val commonSettings = Seq(
-  scalaVersion := "2.12.8",
+  scalaVersion := "2.13.8",
   javacOptions += "-XDignore.symbol.file",
+  compileOrder := CompileOrder.JavaThenScala,
   resolvers += Resolver.mavenLocal,
-  crossScalaVersions := Seq("2.12.8", "2.11.12", "2.10.7"),
+  crossScalaVersions := Seq("2.13.8"),
   concurrentRestrictions in Global += Tags.limit(Tags.Test, 1),
   scalacOptions ++= Seq(
-    "-deprecation",
+//    "-deprecation",
     "-encoding", "UTF-8",
     "-feature",
-    "-Xfuture",
+//    "-Xfuture",
     "-language:implicitConversions", "-language:higherKinds", "-language:existentials", "-language:postfixOps",
     "-unchecked"
   ) ++ (CrossVersion.partialVersion(scalaVersion.value) match {
@@ -48,7 +49,7 @@ lazy val core = (project in file("kamon-core"))
       "com.typesafe"     %  "config"          % "1.3.1",
       "org.slf4j"        %  "slf4j-api"       % "1.7.25",
       "org.hdrhistogram" %  "HdrHistogram"    % "2.1.11",
-      "com.lihaoyi"      %% "fansi"           % "0.2.4"
+      "com.lihaoyi"      %% "fansi"           % "0.2.14"
     )
   )
 
@@ -57,7 +58,7 @@ lazy val testkit = (project in file("kamon-testkit"))
   .settings(commonSettings: _*)
   .settings(
     libraryDependencies ++= Seq(
-      "org.scalatest" %% "scalatest" % "3.0.1"
+      "org.scalatest" %% "scalatest" % "3.0.9"
     )
   ).dependsOn(core)
 
@@ -67,11 +68,11 @@ lazy val coreTests = (project in file("kamon-core-tests"))
     moduleName := "kamon-core-tests",
     resolvers += Resolver.mavenLocal,
     fork in Test := true)
-  .settings(noPublishing: _*)
+//  .settings(noPublishing: _*)
   .settings(commonSettings: _*)
   .settings(
     libraryDependencies ++= Seq(
-      "org.scalatest" %% "scalatest" % "3.0.1" % "test",
+      "org.scalatest" %% "scalatest" % "3.0.9" % "test",
       "ch.qos.logback" % "logback-classic" % "1.2.2" % "test"
     )
   ).dependsOn(testkit)
