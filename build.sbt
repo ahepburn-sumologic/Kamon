@@ -26,6 +26,7 @@ val commonSettings = Seq(
   compileOrder := CompileOrder.JavaThenScala,
   resolvers += Resolver.mavenLocal,
   concurrentRestrictions in Global += Tags.limit(Tags.Test, 1),
+  publishTo := Some("ASOC Libs" at "https://sumologicusw1.jfrog.io/sumologicusw1/asoc-release-local/"),
   scalacOptions ++= Seq(
 //    "-deprecation",
     "-encoding", "UTF-8",
